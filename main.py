@@ -107,10 +107,10 @@ for epoch in range(config.epochs):
         print(f'Loss_D: {errD.data[0][0]}, Loss_G: {errG.data[0][0]}')
         print(f'Loss_D_real: {errD_real.data[0][0]}, Loss_D_fake: {errD_fake.data[0][0]}')
         if gen_iter % 500 == 0:
+            torch.save(netG.state_dict(), f'result/netG_epoch_{epoch}.pth')
+            torch.save(netD.state_dict(), f'result/netD_epoch_{epoch}.pth')
             x_B = x_B.mul(0.5).add(0.5)
-            utils.save_image(x_B, 'result/real_samples.png')
+            utils.save_image(x_B.data, 'result/real_samples.png')
             fake = netG(x_A)
             fake.data = fake.data.mul(0.5).add(0.5)
             utils.save_image(fake.data, f'result/fake_samples_{gen_iter}.png')
-            torch.save(netG.state_dict(), f'result/netG_epoch_{epoch}.pth')
-            torch.save(netD.state_dict(), f'result/netD_epoch_{epoch}.pth')
