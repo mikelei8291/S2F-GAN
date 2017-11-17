@@ -33,8 +33,6 @@ netD = Discriminator(config.gpu)
 netD.apply(weights_init)
 
 input = torch.FloatTensor(config.batch_size, 3, config.image_size, config.image_size)
-one = torch.FloatTensor([1])
-mone = one * -1
 
 # optimizer
 optimizerD = optim.RMSprop(netD.parameters(), lr=config.lrD)
@@ -44,7 +42,6 @@ netD.cuda()
 netG.cuda()
 
 input = input.cuda()
-one, mone = one.cuda(), mone.cuda()
 
 data_path = os.path.join(config.data_path, config.mode)
 batch_size = config.batch_size
@@ -82,11 +79,13 @@ for epoch in range(config.epochs):
             x_B = toVariable(x_B)
             batch_size = x_B.size(0)
             errD_real = netD(x_B)
+            one = torch.ones(errD_real.size()).cuda()
             errD_real.backward(one)
 
             # Train with fake
             x_A = toVariable(x_A)
             errD_fake = netD(x_A)
+            mone = one * -1
             errD_fake.backward(mone)
             errD = errD_real - errD_fake
             optimizerD.step()
