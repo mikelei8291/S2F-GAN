@@ -104,8 +104,8 @@ for epoch in range(config.epochs):
 
         # Print log
         print(f'[{epoch}/{config.epochs}][{i}/{len(b_dataloader)}][{gen_iter}]\
-         Loss_D: {errD.data[0]}, Loss_G: {errG.data[0]}, \
-         Loss_D_real: {errD_real.data[0]}, Loss_D_fake: {errD_fake.data[0]}')
+         Loss_D: {errD.data[0][0]}, Loss_G: {errG.data[0][0]}, \
+         Loss_D_real: {errD_real.data[0][0]}, Loss_D_fake: {errD_fake.data[0][0]}')
         if gen_iter % 500 == 0:
             x_B = x_B.mul(0.5).add(0.5)
             utils.save_image(x_B, 'result/real_samples.png')
