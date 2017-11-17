@@ -13,6 +13,9 @@ from data_loader import imageLoader
 config = getConfig()
 torch.manual_seed(random.randint(1, 10000))
 
+if not os.path.exists('./result'):
+    os.makedirs('./result')
+
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -109,6 +112,5 @@ for epoch in range(config.epochs):
             fake = netG(x_A)
             fake.data = fake.data.mul(0.5).add(0.5)
             utils.save_image(fake.data, f'result/fake_samples_{gen_iter}.png')
-
-    torch.save(netG.state_dict(), f'result/netG_epoch_{epoch}.pth')
-    torch.save(netD.state_dict(), f'result/netD_epoch_{epoch}.pth')
+            torch.save(netG.state_dict(), f'result/netG_epoch_{epoch}.pth')
+            torch.save(netD.state_dict(), f'result/netD_epoch_{epoch}.pth')
